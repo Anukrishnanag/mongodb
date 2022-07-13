@@ -1,0 +1,55 @@
+
+import pymongo
+connection=pymongo.MongoClient("mongodb://localhost:27017")
+mydb=connection["empdb"]
+myemployee=mydb["employees"]
+
+while True:
+    print("  menu  \n")
+    print("1. add an employee \n")
+    print("2. view all employees \n")
+    print("3. search an employee \n")
+    print("4. delete an employee \n")
+    print("5. update an employee \n ")
+    print("6. exit")
+    option=int(input(" select an option "))
+    if option==1:
+        print("add AN option selected")
+        empCode=input("enter the empCode")
+        empName=input("enter the empName")
+        empDesignation=input("enter the empDesignation")
+        data={"empCode":empCode,"empName":empName,"empDesignation":empDesignation}
+        print(data)
+        myemployee.insert_one(data)
+
+    elif option==2:
+        print("view all option selected")
+        result=myemployee.find()
+        for i in result:
+            print(i)
+    elif option==3:
+        print("search option selected")
+        empCode=input("enter the empCode")
+        data={"empCode":empCode}
+        data=myemployee.find(data)
+        for i in data:
+            print(i)
+        
+    elif option==4:
+        print("delete option selected")
+        empCode=input("enter the empCode to be delected ")
+        data={"empCode":empCode}
+        myemployee.delete_one(data)
+        print("data delete succesfully")
+
+    elif option==5:
+        print("update option selected")
+        empCode=input("enter the empCode to be updated")
+        empName=input("enter the empName")
+        empDesignation=input("enter the empDesignation")
+        setData={"empCode":empCode}
+        newData={"$set":{"empName":empName,"empDesignation":empDesignation}}
+        myemployee.update_one(setData,newData)
+        print("data update succesfully")
+    elif option==6:
+        break
